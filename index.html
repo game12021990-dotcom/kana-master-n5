@@ -1,1 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kana Master N5 — Hiragana & Katakana</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#687386;--line:#e5e9f2;--accent:#315efb;--accent2:#7957d5;--good:#15966b;--bad:#d9485f;--shadow:0 12px 35px rgba(28,42,70,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans JP",sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#172554,#315efb 55%,#7957d5);color:#fff;padding:42px 20px 34px}
+.wrap{max-width:1180px;margin:auto}.hero{display:flex;justify-content:space-between;gap:24px;align-items:end}.hero h1{font-size:clamp(30px,5vw,52px);margin:0 0 8px}.hero p{margin:0;color:#e7edff;max-width:720px;line-height:1.6}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.badge{padding:7px 11px;border:1px solid #ffffff45;border-radius:999px;background:#ffffff15;font-size:13px}
+nav{position:sticky;top:0;z-index:10;background:#ffffffee;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.navin{display:flex;gap:8px;overflow:auto;padding:10px 4px}.navin button{white-space:nowrap;border:0;background:transparent;padding:10px 14px;border-radius:10px;color:var(--muted);font-weight:700;cursor:pointer}.navin button.active,.navin button:hover{background:#edf2ff;color:var(--accent)}
+main{padding:28px 16px 70px}.section{margin:28px 0}.section h2{font-size:28px;margin:0 0 8px}.lead{color:var(--muted);line-height:1.6}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.search{flex:1;min-width:220px;padding:13px 15px;border:1px solid var(--line);border-radius:12px;font-size:16px;background:#fff}.filter{padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.kana{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:.18s;position:relative}.kana:hover{transform:translateY(-3px);border-color:#c7d3ff}.kana .jp{font-size:48px;line-height:1.1;font-weight:700}.kana .roma{font-size:18px;font-weight:800;color:var(--accent)}.kana .type{font-size:12px;color:var(--muted);margin-top:4px}.kana .sound{font-size:12px;color:var(--muted);margin-top:7px}.hidden{display:none}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow)}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:12px;border-bottom:1px solid var(--line);text-align:center}th{background:#f7f8fc;font-size:13px;color:var(--muted)}td.jpbig{font-size:30px;font-weight:700}td.rom{font-weight:800;color:var(--accent)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.two{grid-template-columns:1fr}.hero{align-items:start;flex-direction:column}}
+.btn{border:0;border-radius:11px;padding:11px 15px;font-weight:800;cursor:pointer;background:#edf2ff;color:var(--accent)}.btn.primary{background:var(--accent);color:#fff}.btn.good{background:#e8f8f2;color:var(--good)}
+.quizbox{text-align:center}.question{font-size:80px;font-weight:800;margin:12px}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:520px;margin:18px auto}.answers button{padding:15px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:20px;font-weight:800;cursor:pointer}.answers button:hover{background:#f1f4ff}.result{min-height:25px;font-weight:800}.score{font-size:14px;color:var(--muted)}
+.tip{padding:15px 17px;border-left:4px solid var(--accent);background:#f0f4ff;border-radius:10px;line-height:1.65;margin:12px 0}
+footer{padding:28px 16px;background:#101828;color:#cbd5e1}.small{font-size:13px;color:#94a3b8;line-height:1.6}
 
+.daily-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.phrase{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.phrase .jptext{font-size:27px;font-weight:800;margin-bottom:7px}
+.phrase .romaji{color:var(--accent);font-weight:750;margin-bottom:5px}
+.phrase .meaning{color:var(--muted);line-height:1.5;margin-bottom:13px}
+.sound-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.sound-buttons button{border:0;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer;background:#edf2ff;color:var(--accent)}
+.speed-label{font-size:11px;color:var(--muted);margin-left:4px}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap hero">
+<div>
+<h1>🇯🇵 Kana Master N5</h1>
+<p>Website belajar <b>Hiragana & Katakana</b> dari nol untuk persiapan bahasa Jepang tingkat pemula/N5. Klik huruf untuk melihat bacaan dan mendengarkan pelafalannya.</p>
+<div class="badges"><span class="badge">46 Kana dasar</span><span class="badge">Dakuten & Handakuten</span><span class="badge">Yōon</span><span class="badge">Quiz</span><span class="badge">Mobile Friendly</span></div>
+</div>
+</div>
+</header>
+
+<nav><div class="wrap navin">
+<button class="active" data-target="home">Beranda</button><button data-target="hira">Hiragana</button><button data-target="kata">Katakana</button><button data-target="special">Gabungan & Khusus</button><button data-target="daily">Percakapan</button><button data-target="quiz">Quiz N5</button><button data-target="study">Cara Belajar</button>
+</div></nav>
+
+<main class="wrap">
+<section id="home" class="section">
+<h2>Mulai dari sini</h2>
+<p class="lead">Bahasa Jepang menggunakan beberapa sistem tulisan. Hiragana terutama dipakai untuk unsur tata bahasa dan banyak kata Jepang, sedangkan katakana sering dipakai untuk kata serapan/asing. citeturn0search13</p>
+<div class="two">
+<div class="panel"><h3>Hiragana ひらがな</h3><p>Pelajari bentuk dasar あいうえお sampai わをん, lalu lanjut ke ゛/゜ dan kombinasi kecil ゃゅょ.</p><button class="btn primary" onclick="show('hira')">Mulai Hiragana</button></div>
+<div class="panel"><h3>Katakana カタカナ</h3><p>Pelajari ア イ ウ エ オ sampai ワ ヲ ン, lalu dakuten, handakuten, kombinasi dan aturan kata asing.</p><button class="btn primary" onclick="show('kata')">Mulai Katakana</button></div>
+</div>
+<div class="tip"><b>Target belajar:</b> kuasai huruf dasar → suara bersuara → kombinasi → membaca kata pendek → latihan acak. Japan Foundation juga menyediakan materi belajar Hiragana/Katakana dan latihan mandiri berbahasa Indonesia. citeturn0search4turn0search2</div>
+</section>
+
+<section id="hira" class="section hidden">
+<h2>Hiragana — ひらがな</h2><p class="lead">Klik kartu untuk mendengarkan bunyinya.</p>
+<div class="toolbar"><input id="hiraSearch" class="search" placeholder="Cari: あ, a, ka, shi..."><select id="hiraFilter" class="filter"><option value="all">Semua</option><option value="basic">Dasar</option><option value="daku">Dakuten/Handakuten</option><option value="combo">Gabungan</option></select></div>
+<div id="hiraGrid" class="grid"></div>
+</section>
+
+<section id="kata" class="section hidden">
+<h2>Katakana — カタカナ</h2><p class="lead">Sangat penting untuk membaca nama, tempat, makanan, dan banyak kata serapan.</p>
+<div class="toolbar"><input id="kataSearch" class="search" placeholder="Cari: ア, a, ka, shi..."><select id="kataFilter" class="filter"><option value="all">Semua</option><option value="basic">Dasar</option><option value="daku">Dakuten/Handakuten</option><option value="combo">Gabungan</option></select></div>
+<div id="kataGrid" class="grid"></div>
+</section>
+
+<section id="special" class="section hidden">
+<h2>Gabungan & Huruf Khusus</h2>
+<div class="two">
+<div class="panel"><h3>ゃ ゅ ょ / ャ ュ ョ</h3><p>Huruf kecil ini digabungkan dengan baris i seperti き + ゃ = きゃ (kya).</p><div class="grid" id="comboMini"></div></div>
+<div class="panel"><h3>っ / ッ — sokuon</h3><p>Menandakan konsonan berikutnya digandakan, misalnya きって (kitte). Jangan dibaca sebagai “tsu” penuh.</p><div class="tip">Contoh: っか = kka, って = tte, っぱ = ppa.</div></div>
+<div class="panel"><h3>ー — chōonpu</h3><p>Dalam katakana, tanda ー memperpanjang vokal. Contoh: コーヒー = kōhī.</p></div>
+<div class="panel"><h3>ん / ン</h3><p>Ini adalah bunyi n khusus. Pengucapannya dapat sedikit menyesuaikan bunyi setelahnya.</p></div>
+</div>
+<h3>Contoh kombinasi yōon</h3><div class="grid" id="comboGrid"></div>
+</section>
+
+
+<section id="daily" class="section hidden">
+<h2>💬 Percakapan Sehari-hari</h2>
+<p class="lead">Latihan kalimat Jepang yang sering digunakan dalam situasi sehari-hari dan lingkungan kerja/magang. Tekan tombol 🔊 untuk mendengar versi <b>normal</b> atau <b>agak lambat</b>.</p>
+
+<div class="tip"><b>Cara latihan:</b> dengarkan versi normal → dengarkan versi agak lambat → tirukan 3 kali → coba ucapkan tanpa melihat romaji.</div>
+
+<div id="dailyGrid" class="daily-grid"></div>
+</section>
+
+<section id="quiz" class="section hidden">
+<h2>Quiz Kana</h2><p class="lead">Tes cepat. Pilih romaji yang benar untuk huruf yang muncul.</p>
+<div class="panel quizbox"><div class="score" id="score">Skor: 0 / 0</div><div class="question" id="question">あ</div><div class="answers" id="answers"></div><div class="result" id="result"></div><br><button class="btn primary" onclick="newQuestion()">Soal berikutnya</button><button class="btn" onclick="resetScore()">Reset skor</button></div>
+</section>
+
+<section id="study" class="section hidden">
+<h2>Strategi Belajar Menuju N5</h2>
+<div class="two">
+<div class="panel"><h3>Minggu 1 — Hiragana</h3><ol><li>あ行・か行・さ行</li><li>た行・な行・は行</li><li>ま行・や行・ら行</li><li>わ・を・ん</li><li>Review acak tanpa melihat romaji.</li></ol></div>
+<div class="panel"><h3>Minggu 2 — Katakana</h3><ol><li>ア行 sampai ナ行</li><li>ハ行 sampai ワ行・ン</li><li>Dakuten/handakuten</li><li>Kata serapan sederhana</li><li>Review acak.</li></ol></div>
+<div class="panel"><h3>Latihan harian</h3><ul><li>10 menit membaca</li><li>10 menit menulis</li><li>10 menit mendengar dan mengucapkan</li><li>10 menit quiz</li></ul></div>
+<div class="panel"><h3>Tips penting</h3><p>Jangan hanya menghafal bentuk. Hubungkan <b>bentuk → bunyi → kata</b>. Untuk menulis, latih urutan goresan secara konsisten. Japan Foundation menyediakan bahan latihan khusus Hiragana/Katakana. citeturn0search11turn0search9</p></div>
+</div>
+</section>
+</main>
+<footer><div class="wrap"><b>Kana Master N5</b><p class="small">Materi ini dibuat sebagai alat bantu belajar mandiri. Untuk materi resmi tambahan, Japan Foundation menyediakan kursus Hiragana/Katakana A1 berbahasa Indonesia dan lembar latihan. citeturn0search4turn0search2</p></div></footer>
+
+<script>
+const basicH=[
+['あ','a'],['い','i'],['う','u'],['え','e'],['お','o'],['か','ka'],['き','ki'],['く','ku'],['け','ke'],['こ','ko'],
+['さ','sa'],['し','shi'],['す','su'],['せ','se'],['そ','so'],['た','ta'],['ち','chi'],['つ','tsu'],['て','te'],['と','to'],
+['な','na'],['に','ni'],['ぬ','nu'],['ね','ne'],['の','no'],['は','ha'],['ひ','hi'],['ふ','fu'],['へ','he'],['ほ','ho'],
+['ま','ma'],['み','mi'],['む','mu'],['め','me'],['も','mo'],['や','ya'],['ゆ','yu'],['よ','yo'],['ら','ra'],['り','ri'],
+['る','ru'],['れ','re'],['ろ','ro'],['わ','wa'],['を','wo'],['ん','n']];
+const basicK=[
+['ア','a'],['イ','i'],['ウ','u'],['エ','e'],['オ','o'],['カ','ka'],['キ','ki'],['ク','ku'],['ケ','ke'],['コ','ko'],
+['サ','sa'],['シ','shi'],['ス','su'],['セ','se'],['ソ','so'],['タ','ta'],['チ','chi'],['ツ','tsu'],['テ','te'],['ト','to'],
+['ナ','na'],['ニ','ni'],['ヌ','nu'],['ネ','ne'],['ノ','no'],['ハ','ha'],['ヒ','hi'],['フ','fu'],['ヘ','he'],['ホ','ho'],
+['マ','ma'],['ミ','mi'],['ム','mu'],['メ','me'],['モ','mo'],['ヤ','ya'],['ユ','yu'],['ヨ','yo'],['ラ','ra'],['リ','ri'],
+['ル','ru'],['レ','re'],['ロ','ro'],['ワ','wa'],['ヲ','wo'],['ン','n']];
+const dH=[['が','ga'],['ぎ','gi'],['ぐ','gu'],['げ','ge'],['ご','go'],['ざ','za'],['じ','ji'],['ず','zu'],['ぜ','ze'],['ぞ','zo'],['だ','da'],['ぢ','ji'],['づ','zu'],['で','de'],['ど','do'],['ば','ba'],['び','bi'],['ぶ','bu'],['べ','be'],['ぼ','bo'],['ぱ','pa'],['ぴ','pi'],['ぷ','pu'],['ぺ','pe'],['ぽ','po']];
+const dK=[['ガ','ga'],['ギ','gi'],['グ','gu'],['ゲ','ge'],['ゴ','go'],['ザ','za'],['ジ','ji'],['ズ','zu'],['ゼ','ze'],['ゾ','zo'],['ダ','da'],['ヂ','ji'],['ヅ','zu'],['デ','de'],['ド','do'],['バ','ba'],['ビ','bi'],['ブ','bu'],['ベ','be'],['ボ','bo'],['パ','pa'],['ピ','pi'],['プ','pu'],['ペ','pe'],['ポ','po']];
+const combosH=[['きゃ','kya'],['きゅ','kyu'],['きょ','kyo'],['しゃ','sha'],['しゅ','shu'],['しょ','sho'],['ちゃ','cha'],['ちゅ','chu'],['ちょ','cho'],['にゃ','nya'],['にゅ','nyu'],['にょ','nyo'],['ひゃ','hya'],['ひゅ','hyu'],['ひょ','hyo'],['みゃ','mya'],['みゅ','myu'],['みょ','myo'],['りゃ','rya'],['りゅ','ryu'],['りょ','ryo'],['ぎゃ','gya'],['ぎゅ','gyu'],['ぎょ','gyo'],['じゃ','ja'],['じゅ','ju'],['じょ','jo'],['びゃ','bya'],['びゅ','byu'],['びょ','byo'],['ぴゃ','pya'],['ぴゅ','pyu'],['ぴょ','pyo']];
+const combosK=[['キャ','kya'],['キュ','kyu'],['キョ','kyo'],['シャ','sha'],['シュ','shu'],['ショ','sho'],['チャ','cha'],['チュ','chu'],['チョ','cho'],['ニャ','nya'],['ニュ','nyu'],['ニョ','nyo'],['ヒャ','hya'],['ヒュ','hyu'],['ヒョ','hyo'],['ミャ','mya'],['ミュ','myu'],['ミョ','myo'],['リャ','rya'],['リュ','ryu'],['リョ','ryo'],['ギャ','gya'],['ギュ','gyu'],['ギョ','gyo'],['ジャ','ja'],['ジュ','ju'],['ジョ','jo'],['ビャ','bya'],['ビュ','byu'],['ビョ','byo'],['ピャ','pya'],['ピュ','pyu'],['ピョ','pyo']];
+function speak(text){if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=.8;speechSynthesis.speak(u)}}
+function card(x,type){let [jp,rom]=x;let el=document.createElement('div');el.className='kana';el.dataset.jp=jp;el.dataset.rom=rom;el.dataset.type=type;el.innerHTML=`<div class="jp">${jp}</div><div class="roma">${rom}</div><div class="type">${type==='basic'?'Dasar':type==='daku'?'Dakuten / Handakuten':'Gabungan'}</div><div class="sound">🔊 Klik untuk dengar</div>`;el.onclick=()=>speak(jp);return el}
+function render(id,data){let g=document.getElementById(id);g.innerHTML='';data.forEach(x=>g.appendChild(card(x,x[2]||'basic')))}
+function tagged(arr,t){return arr.map(x=>[x[0],x[1],t])}
+render('hiraGrid',[...tagged(basicH,'basic'),...tagged(dH,'daku'),...tagged(combosH,'combo')]);
+render('kataGrid',[...tagged(basicK,'basic'),...tagged(dK,'daku'),...tagged(combosK,'combo')]);
+render('comboGrid',tagged(combosH,'combo').concat(tagged(combosK,'combo')));
+render('comboMini',tagged([['ゃ','ya'],['ゅ','yu'],['ょ','yo'],['ャ','ya'],['ュ','yu'],['ョ','yo']],'combo'));
+
+function setupFilter(searchId,filterId,gridId){let s=document.getElementById(searchId),f=document.getElementById(filterId),g=document.getElementById(gridId);function go(){let q=s.value.toLowerCase(),t=f.value;[...g.children].forEach(c=>{let ok=(t==='all'||c.dataset.type===t)&&(!q||c.dataset.jp.includes(q)||c.dataset.rom.includes(q));c.classList.toggle('hidden',!ok)})}s.oninput=go;f.onchange=go}
+setupFilter('hiraSearch','hiraFilter','hiraGrid');setupFilter('kataSearch','kataFilter','kataGrid');
+
+function show(id){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===id));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.target));
+
+let pool=basicH.concat(basicK,dH,dK),score=0,total=0;
+function newQuestion(){let q=pool[Math.floor(Math.random()*pool.length)],opts=new Set([q[1]]);while(opts.size<4)opts.add(pool[Math.floor(Math.random()*pool.length)][1]);let arr=[...opts].sort(()=>Math.random()-.5);document.getElementById('question').textContent=q[0];document.getElementById('result').textContent='';document.getElementById('answers').innerHTML='';arr.forEach(a=>{let b=document.createElement('button');b.textContent=a;b.onclick=()=>answer(a,q[1]);document.getElementById('answers').appendChild(b)});speak(q[0])}
+function answer(a,correct){total++;let r=document.getElementById('result');if(a===correct){score++;r.textContent='✓ Benar!';r.style.color='var(--good)'}else{r.textContent='✗ Belum tepat. Jawaban: '+correct;r.style.color='var(--bad)'}document.getElementById('score').textContent=`Skor: ${score} / ${total}`}
+function resetScore(){score=0;total=0;document.getElementById('score').textContent='Skor: 0 / 0';newQuestion()}
+newQuestion();
+
+const dailyPhrases=[
+['おはようございます。','Ohayou gozaimasu.','Selamat pagi.'],
+['こんにちは。','Konnichiwa.','Halo / selamat siang.'],
+['こんばんは。','Konbanwa.','Selamat malam.'],
+['おやすみなさい。','Oyasuminasai.','Selamat tidur.'],
+['ありがとうございます。','Arigatou gozaimasu.','Terima kasih.'],
+['どういたしまして。','Dou itashimashite.','Sama-sama.'],
+['すみません。','Sumimasen.','Permisi / maaf.'],
+['ごめんなさい。','Gomennasai.','Maaf.'],
+['はい、わかりました。','Hai, wakarimashita.','Ya, saya mengerti.'],
+['いいえ、わかりません。','Iie, wakarimasen.','Tidak, saya tidak mengerti.'],
+['お願いします。','Onegaishimasu.','Tolong / mohon bantuannya.'],
+['大丈夫です。','Daijoubu desu.','Tidak apa-apa / saya baik-baik saja.'],
+['元気ですか。','Genki desu ka.','Apa kabar?'],
+['元気です。','Genki desu.','Saya baik-baik saja.'],
+['これは何ですか。','Kore wa nan desu ka.','Ini apa?'],
+['いくらですか。','Ikura desu ka.','Berapa harganya?'],
+['トイレはどこですか。','Toire wa doko desu ka.','Toiletnya di mana?'],
+['ちょっと待ってください。','Chotto matte kudasai.','Tolong tunggu sebentar.'],
+['もう一度お願いします。','Mou ichido onegaishimasu.','Tolong ulangi sekali lagi.'],
+['ゆっくり話してください。','Yukkuri hanashite kudasai.','Tolong bicara lebih pelan.'],
+['日本語を勉強しています。','Nihongo o benkyou shiteimasu.','Saya sedang belajar bahasa Jepang.'],
+['はじめまして。','Hajimemashite.','Salam kenal.'],
+['よろしくお願いします。','Yoroshiku onegaishimasu.','Mohon bantuannya / senang berkenalan.'],
+['また明日。','Mata ashita.','Sampai besok.'],
+['またね。','Mata ne.','Sampai jumpa.'],
+
+['行ってきます。','Itte kimasu.','Saya pergi dulu.'],
+['行ってらっしゃい。','Itterasshai.','Hati-hati / sampai nanti.'],
+['ただいま。','Tadaima.','Saya sudah pulang.'],
+['おかえりなさい。','Okaerinasai.','Selamat datang kembali.'],
+['いただきます。','Itadakimasu.','Ucapan sebelum makan.'],
+['ごちそうさまでした。','Gochisousama deshita.','Terima kasih atas makanannya.'],
+['お疲れさまです。','Otsukaresama desu.','Terima kasih atas kerja kerasnya.'],
+['頑張ってください。','Ganbatte kudasai.','Semangat / lakukan yang terbaik.'],
+['気をつけてください。','Ki o tsukete kudasai.','Tolong hati-hati.'],
+['手伝いましょうか。','Tetsudaimashou ka.','Perlu saya bantu?'],
+['手伝ってください。','Tetsudatte kudasai.','Tolong bantu saya.'],
+['わかりました。','Wakarimashita.','Saya mengerti.'],
+['わかりません。','Wakarimasen.','Saya tidak mengerti.'],
+['もう少しゆっくりお願いします。','Mou sukoshi yukkuri onegaishimasu.','Tolong sedikit lebih pelan.'],
+['これはどうしますか。','Kore wa dou shimasu ka.','Ini harus bagaimana?'],
+['次は何をしますか。','Tsugi wa nani o shimasu ka.','Selanjutnya saya harus melakukan apa?'],
+['終わりました。','Owarimashita.','Sudah selesai.'],
+['まだ終わっていません。','Mada owatte imasen.','Belum selesai.'],
+['確認してください。','Kakunin shite kudasai.','Tolong periksa.'],
+['問題ありません。','Mondai arimasen.','Tidak ada masalah.'],
+['少し待ってください。','Sukoshi matte kudasai.','Tolong tunggu sebentar.'],
+['ありがとうございます。助かりました。','Arigatou gozaimasu. Tasukarimashita.','Terima kasih. Anda sangat membantu.'],
+['失礼します。','Shitsurei shimasu.','Permisi.'],
+['お先に失礼します。','Osaki ni shitsurei shimasu.','Saya permisi pulang dulu.'],
+['また明日お願いします。','Mata ashita onegaishimasu.','Sampai besok.'],
+];
+
+function speakPhrase(text,rate){
+ if('speechSynthesis' in window){
+  speechSynthesis.cancel();
+  let u=new SpeechSynthesisUtterance(text);
+  u.lang='ja-JP';
+  u.rate=rate;
+  speechSynthesis.speak(u);
+ }
+}
+function renderDaily(){
+ const g=document.getElementById('dailyGrid');
+ if(!g)return;
+ g.innerHTML='';
+ dailyPhrases.forEach(p=>{
+  const el=document.createElement('div');
+  el.className='phrase';
+  el.innerHTML=`<div class="jptext">${p[0]}</div>
+  <div class="romaji">${p[1]}</div>
+  <div class="meaning">${p[2]}</div>
+  <div class="sound-buttons">
+   <button>🔊 Normal</button>
+   <button>🐢 Agak lambat</button>
+  </div>`;
+  el.children[3].children[0].onclick=()=>speakPhrase(p[0],0.9);
+  el.children[3].children[1].onclick=()=>speakPhrase(p[0],0.55);
+  g.appendChild(el);
+ });
+}
+renderDaily();
+
+</script>
+</body>
+</html>
